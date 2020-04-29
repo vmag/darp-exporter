@@ -6,7 +6,6 @@ import requests
 
 darp_host_list = {}
 genesis_host = os.environ['GENESIS_HOST']
-#genesis_url = 'http://13.48.248.81:65013/config'
 class DarpCollector(object):
     def collect(self):
         c = Metric('darp_owl', 'Help text', 'summary')
@@ -18,6 +17,9 @@ class DarpCollector(object):
             owl = response['pulses'][k]['owls'].split(',')
             owl_values = {}
             for a in owl:
+                if '=' not in a:
+                    owl_values[a] = '1000'
+                    continue
                 owl_values[a.split('=')[0]] = a.split('=')[1]
             darp_host_list[darp_host_id]['latency'] =  owl_values
         print(darp_host_list)
@@ -29,8 +31,8 @@ class DarpCollector(object):
 
 REGISTRY.register(DarpCollector())
 def main():
-    print('Starting DARP Prometheus exporter')
     start_http_server(18000)
+    print('Started DARP Prometheus exporter')
     while True:
         time.sleep(10)
 
