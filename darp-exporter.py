@@ -18,7 +18,7 @@ class DarpCollector(object):
             owl_values = {}
             for a in owl:
                 if '=' not in a:
-                    owl_values[a] = '1000'
+                    owl_values[a] = '3000'
                     continue
                 owl_values[a.split('=')[0]] = a.split('=')[1]
             darp_host_list[darp_host_id]['latency'] =  owl_values
